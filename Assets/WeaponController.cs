@@ -10,7 +10,7 @@ public class WeaponController : MonoBehaviour
     private Text firePowerText;
 
     [SerializeField]
-    private Weapon weapon;
+    private Bow bow;
 
     [SerializeField]
     private string enemyTag;
@@ -44,12 +44,15 @@ public class WeaponController : MonoBehaviour
 
     [SerializeField]
     private GameObject myo = null;
-
     private ThalmicMyo thalmicMyo;
+    
+    private Rigidbody rb;
     void Start()
     {
-        weapon.SetEnemyTag(enemyTag);
-        weapon.Reload();
+        bow.SetEnemyTag(enemyTag);
+        bow.Reload();
+
+        rb=bow.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -61,19 +64,17 @@ public class WeaponController : MonoBehaviour
         if (thalmicMyo.pose == Pose.Fist)
         {
             fire = true;
-            print("fire");
         }
 
         if (fire && firePower < maxFirePower)
         {   
-            weapon.Draw();
+            bow.Draw();
             firePower += Time.deltaTime * firePowerSpeed;
         }
 
         if (fire && thalmicMyo.pose!=Pose.Fist)
         {
-            print("firing");
-            weapon.Fire(firePower);
+            bow.Fire(firePower);
             firePower = 0;
             fire = false;
         }
@@ -118,7 +119,7 @@ public class WeaponController : MonoBehaviour
 
         Quaternion antiRoll = Quaternion.AngleAxis(relativeRoll, myo.transform.forward);
 
-        weapon.transform.rotation = _antiYaw * antiRoll * Quaternion.LookRotation(myo.transform.forward);
+        rb.rotation = _antiYaw * antiRoll * Quaternion.LookRotation(myo.transform.forward);
     }
     float normalizeAngle (float angle)
     {

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Bow : MonoBehaviour
 {
     [SerializeField]
     private float reloadTime;
@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
 
     [SerializeField]
     private float drawSpeed = 0.001f;
+    
     public void SetEnemyTag(string enemyTag)
     {
         this.enemyTag = enemyTag;
@@ -44,7 +45,8 @@ public class Weapon : MonoBehaviour
     public void Fire(float firePower)
     {
         if (isReloading || currentArrow == null) return;
-        var force = Vector3.right * firePower;
+        
+        var force = transform.right*firePower;
         currentArrow.Fly(force);
         currentArrow = null;
         Reload();
@@ -52,9 +54,11 @@ public class Weapon : MonoBehaviour
 
     public void Draw()
     {
+        if (isReloading || currentArrow == null) return;
+        
         Vector3 position = currentArrow.transform.position;
         //currentArrow.SetParent(null);
-        if (transform.position.x != 0)
+        if (transform.position.x >position.x-1)
         {
             position.x -= drawSpeed;
             currentArrow.transform.position = position;

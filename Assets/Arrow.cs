@@ -34,6 +34,8 @@ public class Arrow : MonoBehaviour
         if(hit)return;
 
         hit=true;
+
+        //print("collision");
         
         //do damage
         if(other.CompareTag(enemyTag)){
