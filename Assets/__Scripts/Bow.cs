@@ -21,6 +21,11 @@ public class Bow : MonoBehaviour
     [SerializeField]
     private float drawSpeed = 0.001f;
     
+    private void Update() {
+        if(currentArrow==null){
+            Reload();
+        }
+    }
     public void SetEnemyTag(string enemyTag)
     {
         this.enemyTag = enemyTag;

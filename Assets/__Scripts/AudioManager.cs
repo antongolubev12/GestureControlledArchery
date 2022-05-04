@@ -46,12 +46,23 @@ public class AudioManager : MonoBehaviour
        sound.source.Play();
     }
 
-    public void LightSaberOn(){
-        Play("SaberOn");
+    public void PlayOnce(string name)
+    {
+       Sound sound= Array.Find(sounds, sound=>sound.name == name);
+       sound.source.PlayOneShot(sound.clip);
     }
 
+    public void LightSaberOn(){
+        PlayOnce("SaberOn");
+    }
+
+    public void LightSaberOff(){
+        Play("SaberOff");
+    }
+
+
     public void LightSaberHum(){
-        Play("Hum");
+        PlayOnce("Hum");
     }
 
     public void MenuClick(){

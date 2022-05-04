@@ -85,11 +85,10 @@ public class WeaponController : MonoBehaviour
 
             if (thalmicMyo.pose == Pose.WaveOut)
             {
-                print("pose");
                 AudioManager.Instance.LightSaberOn();
-                currentWeapon = Weapons.LightSaber;
                 bow.gameObject.SetActive(false);
                 lightSaber.SetActive(true);
+                currentWeapon = Weapons.LightSaber;
 
             }
         }
@@ -97,12 +96,13 @@ public class WeaponController : MonoBehaviour
         if (currentWeapon == Weapons.LightSaber)
         {   
             moveBow(saberRB);
-            AudioManager.Instance.LightSaberHum();
+            
             if (thalmicMyo.pose == Pose.WaveIn)
             {
                 currentWeapon = Weapons.Bow;
                 lightSaber.SetActive(false);
                 bow.gameObject.SetActive(true);
+                AudioManager.Instance.LightSaberOff();
             }
         }
 
