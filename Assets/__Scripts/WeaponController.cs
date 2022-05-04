@@ -6,20 +6,17 @@ using UnlockType = Thalmic.Myo.UnlockType;
 using VibrationType = Thalmic.Myo.VibrationType;
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField]
-    private Text firePowerText;
+    [SerializeField] private Text firePowerText;
 
-    [SerializeField]
-    private Bow bow;
+    [SerializeField] private Bow bow;
 
-    [SerializeField]
-    private string enemyTag;
+    [SerializeField] private GameObject lightSaber;
 
-    [SerializeField]
-    private float maxFirePower;
+    [SerializeField] private string enemyTag;
 
-    [SerializeField]
-    private float firePowerSpeed;
+    [SerializeField] private float maxFirePower;
+
+    [SerializeField] private float firePowerSpeed;
 
     private float firePower;
 
@@ -31,19 +28,32 @@ public class WeaponController : MonoBehaviour
 
     private Pose _lastPose = Pose.Unknown;
 
-    [SerializeField]
-    private GameObject myo = null;
+    [SerializeField] private GameObject myo = null;
     private ThalmicMyo thalmicMyo;
 
-    private Rigidbody rb;
+    private Rigidbody bowRB;
+
+    private Rigidbody saberRB;
+
+    enum Weapons
+    {
+        LightSaber,
+        Bow
+    }
+
+    private Weapons currentWeapon;
 
 
     void Start()
     {
+        currentWeapon = Weapons.Bow;
+        lightSaber.SetActive(false);
+
         bow.SetEnemyTag(enemyTag);
         bow.Reload();
 
-        rb = bow.GetComponent<Rigidbody>();
+        bowRB = bow.GetComponent<Rigidbody>();
+        saberRB = lightSaber.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -51,27 +61,55 @@ public class WeaponController : MonoBehaviour
         // Access the ThalmicMyo component attached to the Myo object.
         thalmicMyo = myo.GetComponent<ThalmicMyo>();
 
-        moveBow();
-        if (thalmicMyo.pose == Pose.Fist)
+
+        if (currentWeapon == Weapons.Bow)
         {
-            fire = true;
+            moveBow(bowRB);
+            if (thalmicMyo.pose == Pose.Fist)
+            {
+                fire = true;
+            }
+
+            if (fire && firePower < maxFirePower)
+            {
+                bow.Draw();
+                firePower += Time.deltaTime * firePowerSpeed;
+            }
+
+            if (fire && thalmicMyo.pose != Pose.Fist)
+            {
+                bow.Fire(firePower);
+                firePower = 0;
+                fire = false;
+            }
+
+            if (thalmicMyo.pose == Pose.WaveOut)
+            {
+                print("pose");
+                AudioManager.Instance.LightSaberOn();
+                currentWeapon = Weapons.LightSaber;
+                bow.gameObject.SetActive(false);
+                lightSaber.SetActive(true);
+
+            }
         }
 
-        if (fire && firePower < maxFirePower)
-        {
-            bow.Draw();
-            firePower += Time.deltaTime * firePowerSpeed;
+        if (currentWeapon == Weapons.LightSaber)
+        {   
+            moveBow(saberRB);
+            AudioManager.Instance.LightSaberHum();
+            if (thalmicMyo.pose == Pose.WaveIn)
+            {
+                currentWeapon = Weapons.Bow;
+                lightSaber.SetActive(false);
+                bow.gameObject.SetActive(true);
+            }
         }
-        
-        if (fire && thalmicMyo.pose != Pose.Fist)
-        {
-            bow.Fire(firePower);
-            firePower = 0;
-            fire = false;
-        }
+
+
     }
 
-    void moveBow()
+    void moveBow(Rigidbody rb)
     {
         // Update references when the pose becomes fingers spread or the q key is pressed.
         bool updateReference = false;
@@ -133,7 +171,7 @@ public class WeaponController : MonoBehaviour
         float sign = directionCosine < 0.0f ? 1.0f : -1.0f;
 
         // Return the angle of roll (in degrees) from the cosine and the sign.
-        return sign * Mathf.Rad2Deg * Mathf.Acos(cosine);
+        return sign * Mathf.Rad2Deg * Mathf.Acos (cosine);
     }
 
     Vector3 computeZeroRollVector(Vector3 forward)
