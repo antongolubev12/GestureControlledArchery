@@ -40,7 +40,8 @@ public class Arrow : MonoBehaviour
         
         //do damage
         if(other.CompareTag(enemyTag)){
-            
+            var health = other.GetComponent<HealthController>();
+            health.ApplyDamage(damage);
         }
 
         rb.velocity=Vector3.zero;
@@ -50,3 +51,4 @@ public class Arrow : MonoBehaviour
     }
 
 }
+ 

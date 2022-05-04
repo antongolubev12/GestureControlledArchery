@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2946bb124319d17429566b64bebad13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 30
   torque: 5
 --- !u!54 &2048212917
 Rigidbody:

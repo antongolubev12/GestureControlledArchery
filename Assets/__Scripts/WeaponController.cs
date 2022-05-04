@@ -15,8 +15,6 @@ public class WeaponController : MonoBehaviour
     [SerializeField]
     private string enemyTag;
 
-    [SerializeField] private GameObject ArrowPrefab;
-
     [SerializeField]
     private float maxFirePower;
 
@@ -24,17 +22,6 @@ public class WeaponController : MonoBehaviour
     private float firePowerSpeed;
 
     private float firePower;
-
-    [SerializeField]
-    private float rotateSpeed;
-
-    [SerializeField]
-    private float minRotation;
-
-    [SerializeField]
-    private float maxRotation;
-
-    private float mouseY;
 
     private bool fire;
 
