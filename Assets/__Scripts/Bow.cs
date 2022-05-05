@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class Bow : MonoBehaviour
 {
-    [SerializeField]
-    private float reloadTime;
+    [SerializeField]  private float reloadTime;
 
-    [SerializeField]
-    private Arrow arrowPrefab;
+    [SerializeField] private Arrow arrowPrefab;
 
-    [SerializeField]
-    private Transform spawnPoint;
+    [SerializeField] private Transform spawnPoint;
 
     public Arrow currentArrow;
 
@@ -18,8 +15,7 @@ public class Bow : MonoBehaviour
 
     private bool isReloading;
 
-    [SerializeField]
-    private float drawSpeed = 0.001f;
+    [SerializeField] private float drawSpeed = 0.001f;
     
     private void Update() {
         if(currentArrow==null){

@@ -392,7 +392,7 @@ Transform:
   m_GameObject: {fileID: 2270717367977627772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 389.71, y: 4.11, z: 280.1}
-  m_LocalScale: {x: 4.758944, y: 4.758944, z: 4.758944}
+  m_LocalScale: {x: 1.4396281, y: 1.4396281, z: 1.4396281}
   m_Children:
   - {fileID: 2270717366989517835}
   m_Father: {fileID: 0}
@@ -425,7 +425,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 029cd7863cc180e45aef489b987637ee, type: 2}
+  - {fileID: 2100000, guid: f1b8d481a2c82404c802d69874de5dad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -475,6 +475,7 @@ MonoBehaviour:
   healthBar: {fileID: 2270717367105590001}
   healthText: {fileID: 2270717367392480215}
   maxHealth: 100
+  score: 100
 --- !u!114 &2270717367977627746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,8 +489,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  MoveSpeed: 4
-  MaxDist: 10
+  MoveSpeed: 8
+  MaxDist: 2
 --- !u!114 &2270717367977627749
 MonoBehaviour:
   m_ObjectHideFlags: 0

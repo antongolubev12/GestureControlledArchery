@@ -12,8 +12,6 @@ public class Arrow : MonoBehaviour
 
     private string enemyTag;
 
-    private bool hit=false;
-
     private void Start() {
         rb=gameObject.GetComponent<Rigidbody>();
     }
@@ -24,6 +22,7 @@ public class Arrow : MonoBehaviour
 
     public void Fly(Vector3 force){
         rb.isKinematic=false;
+        //send arrow
         rb.AddForce(force,ForceMode.Impulse);
         
         //add rotation
@@ -32,21 +31,16 @@ public class Arrow : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(hit)return;
-
-        hit=true;
-
         print("collision");
         
-        //do damage
+        //do damage only to enemy tag
         if(other.CompareTag(enemyTag)){
             var health = other.GetComponent<HealthController>();
             health.ApplyDamage(damage);
+            AudioManager.Instance.PlayHit();
         }
 
-        rb.velocity=Vector3.zero;
-        rb.angularVelocity= Vector3.zero;
-        rb.isKinematic=true;
+        Destroy(gameObject);
     }
 
 }

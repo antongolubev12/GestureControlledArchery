@@ -52,6 +52,17 @@ public class AudioManager : MonoBehaviour
        sound.source.PlayOneShot(sound.clip);
     }
 
+    public void PlayClash(){
+        Play("Clash");
+    }
+
+    public void PlayHit(){
+        Play("Hit");
+    }
+
+    public void PlayFire(){
+        Play("Fire");
+    }
     public void LightSaberOn(){
         PlayOnce("SaberOn");
     }

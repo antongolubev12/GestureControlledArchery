@@ -4,10 +4,10 @@ using LockingPolicy = Thalmic.Myo.LockingPolicy;
 using Pose = Thalmic.Myo.Pose;
 using UnlockType = Thalmic.Myo.UnlockType;
 using VibrationType = Thalmic.Myo.VibrationType;
+using UnityEngine.SceneManagement;
+
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private Text firePowerText;
-
     [SerializeField] private Bow bow;
 
     [SerializeField] private GameObject lightSaber;
@@ -29,11 +29,14 @@ public class WeaponController : MonoBehaviour
     private Pose _lastPose = Pose.Unknown;
 
     [SerializeField] private GameObject myo = null;
+
     private ThalmicMyo thalmicMyo;
 
     private Rigidbody bowRB;
 
     private Rigidbody saberRB;
+
+    private Scene scene;
 
     enum Weapons
     {
@@ -45,7 +48,8 @@ public class WeaponController : MonoBehaviour
 
 
     void Start()
-    {
+    {   
+        scene = SceneManager.GetActiveScene();
         currentWeapon = Weapons.Bow;
         lightSaber.SetActive(false);
 
@@ -58,58 +62,65 @@ public class WeaponController : MonoBehaviour
 
     void Update()
     {
-        // Access the ThalmicMyo component attached to the Myo object.
-        thalmicMyo = myo.GetComponent<ThalmicMyo>();
-
-
-        if (currentWeapon == Weapons.Bow)
+        //if game is not paused or over
+        if (Time.timeScale == 1f)
         {
-            moveBow(bowRB);
-            if (thalmicMyo.pose == Pose.Fist)
+            // Access the ThalmicMyo component attached to the Myo object.
+            thalmicMyo = myo.GetComponent<ThalmicMyo>();
+
+            if (currentWeapon == Weapons.Bow)
             {
-                fire = true;
+                moveWeapon(bowRB);
+
+                //if pose is fist then charge the bow
+                if (thalmicMyo.pose == Pose.Fist)
+                {
+                    fire = true;
+                }
+
+                if (fire && firePower < maxFirePower)
+                {
+                    bow.Draw();
+                    //fire power is pased on how long the bow was charged for
+                    firePower += Time.deltaTime * firePowerSpeed;
+                }
+
+                //fire the bow when the fist is let go
+                if (fire && thalmicMyo.pose != Pose.Fist)
+                {
+                    AudioManager.Instance.PlayFire();
+                    bow.Fire(firePower);
+                    firePower = 0;
+                    fire = false;
+                }
+
+                //Wave out to change to lightsaber
+                if (scene.name == "Game" && thalmicMyo.pose == Pose.WaveOut)
+                {
+                    AudioManager.Instance.LightSaberOn();
+                    bow.gameObject.SetActive(false);
+                    lightSaber.SetActive(true);
+                    currentWeapon = Weapons.LightSaber;
+
+                }
             }
 
-            if (fire && firePower < maxFirePower)
+            if (currentWeapon == Weapons.LightSaber)
             {
-                bow.Draw();
-                firePower += Time.deltaTime * firePowerSpeed;
-            }
+                moveWeapon(saberRB);
 
-            if (fire && thalmicMyo.pose != Pose.Fist)
-            {
-                bow.Fire(firePower);
-                firePower = 0;
-                fire = false;
-            }
-
-            if (thalmicMyo.pose == Pose.WaveOut)
-            {
-                AudioManager.Instance.LightSaberOn();
-                bow.gameObject.SetActive(false);
-                lightSaber.SetActive(true);
-                currentWeapon = Weapons.LightSaber;
-
+                if (thalmicMyo.pose == Pose.WaveIn)
+                {
+                    currentWeapon = Weapons.Bow;
+                    lightSaber.SetActive(false);
+                    bow.gameObject.SetActive(true);
+                    AudioManager.Instance.LightSaberOff();
+                }
             }
         }
-
-        if (currentWeapon == Weapons.LightSaber)
-        {   
-            moveBow(saberRB);
-            
-            if (thalmicMyo.pose == Pose.WaveIn)
-            {
-                currentWeapon = Weapons.Bow;
-                lightSaber.SetActive(false);
-                bow.gameObject.SetActive(true);
-                AudioManager.Instance.LightSaberOff();
-            }
-        }
-
-
     }
 
-    void moveBow(Rigidbody rb)
+    void moveWeapon(Rigidbody rb)
     {
         // Update references when the pose becomes fingers spread or the q key is pressed.
         bool updateReference = false;
@@ -149,6 +160,8 @@ public class WeaponController : MonoBehaviour
 
         rb.rotation = _antiYaw * antiRoll * Quaternion.LookRotation(myo.transform.forward);
     }
+
+
     float normalizeAngle(float angle)
     {
         if (angle > 180.0f)
@@ -171,7 +184,7 @@ public class WeaponController : MonoBehaviour
         float sign = directionCosine < 0.0f ? 1.0f : -1.0f;
 
         // Return the angle of roll (in degrees) from the cosine and the sign.
-        return sign * Mathf.Rad2Deg * Mathf.Acos (cosine);
+        return sign * Mathf.Rad2Deg * Mathf.Acos(cosine);
     }
 
     Vector3 computeZeroRollVector(Vector3 forward)

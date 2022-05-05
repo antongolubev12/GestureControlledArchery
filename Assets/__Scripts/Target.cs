@@ -7,8 +7,9 @@ public class Target : MonoBehaviour
     [SerializeField] public float score;
 
     private void OnTriggerEnter() {
-        print("Collision");
-        SpawnTargets.Instance.DestroyTarget(transform);
+        print("Destroying "+gameObject.name);
+        AudioManager.Instance.PlayHit();
+        SpawnTargets.Instance.DestroyTarget();
         Score.Instance.SetScore(score);
         Destroy(gameObject);
     }

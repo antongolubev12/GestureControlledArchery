@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class SpawnTargets : MonoBehaviour
 {
@@ -24,49 +25,50 @@ public class SpawnTargets : MonoBehaviour
 
     [SerializeField] private int numberOfTargets;
 
-    private List <Transform> currentTargets = new List<Transform>();
+    private int maxTargets=10;
+
+    public List<Transform> availableSpawnPoints;
+
+    int count;
+
+    //public List <Transform> currentTargets = new List<Transform>();
 
     // Start is called before the first frame update
     private void Start() {
-
-        Spawn(numberOfTargets);
+        InvokeRepeating("Spawn",0f,5f);
+        //Spawn(numberOfTargets);
+        count=0;
     }
 
-    public void Spawn(int targetsToSpawn){
-        for(int i=0; i<=targetsToSpawn;i++)
-        {   
-            //pick a random spawnpoint from the available points
-            int randomSpawn=Random.Range(0,spawnPoints.Length);
-            //remove that spawnpoint from the list of available pounts
+    public void Spawn(){
+        if(maxTargets<count) return;
+        
+        int targetsToSpawn=3;
 
-            if(currentTargets.Contains(spawnPoints[randomSpawn])){
-                randomSpawn=Random.Range(0,spawnPoints.Length);
-            }
-            
+        for(int i=1; i<=targetsToSpawn;i++)
+        {   
             //pick a random target to spawn
             int randomTarget= Random.Range(0,targets.Length);
 
-            if(spawnPoints[randomSpawn]==null){
-                randomSpawn-=1;
-            }
+            int randomPoint= Random.Range(0,spawnPoints.Length);
+
 
             //spawn it and rotate it 90 degrees
-            GameObject spawnedObj= Instantiate(targets[randomTarget], spawnPoints[randomSpawn].position, Quaternion.Euler(0, 0, 90));
+            GameObject spawnedObj= Instantiate(targets[randomTarget], spawnPoints[randomPoint].position, Quaternion.Euler(0, 0, 90));
 
+            spawnedObj.transform.position = new Vector3(spawnedObj.transform.position.x, spawnedObj.transform.position.y, spawnedObj.transform.position.z);
 
-            //spawnedObj.transform.position = new Vector3(spawnedObj.transform.position.x, spawnedObj.transform.position.y, 0);
 
             //add object to list of current targets
-            currentTargets.Add(spawnedObj.transform);
+            //currentTargets.Add(spawnedObj.transform);
 
-            print("Spawned at : "+randomSpawn);
-            i++;
+            print("Spawned at : "+count);
+            count++;
         }
     }
 
-    public void DestroyTarget(Transform target){
-        currentTargets.Remove(target);
-        Spawn(1);
+    public void DestroyTarget(){
+        count--;
     }
 
     // Update is called once per frame

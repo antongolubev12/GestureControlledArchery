@@ -98,7 +98,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.01, y: 1.03, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6670477617303269596
 MonoBehaviour:
@@ -115,6 +115,7 @@ MonoBehaviour:
   healthBar: {fileID: 6670477618580582990}
   healthText: {fileID: 6670477618932796264}
   maxHealth: 100
+  score: 0
 --- !u!114 &6670477617303269597
 MonoBehaviour:
   m_ObjectHideFlags: 0

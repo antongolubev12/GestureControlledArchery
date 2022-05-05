@@ -16,9 +16,11 @@ public class EnemyMovement : MonoBehaviour
 
         if (Vector3.Distance(transform.position, Player.position) <= MaxDist)
         {
-            //Here Call any function U want Like Shoot at here or something
+            MenuManager.Instance.GameOverMenu();
         }
 
     }
+
+    
 }
 

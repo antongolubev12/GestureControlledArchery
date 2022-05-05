@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
     private float roundedTime;
 
     private void Start() {
-        time=90f;
+        time=60f;
         timerText.text="Time Remaining: "+time;
     }
 
@@ -30,7 +30,7 @@ public class Timer : MonoBehaviour
         roundedTime= Mathf.Round(time);
         if ( time < 0 )
         {
-            //GameOver();
+            MenuManager.Instance.GameOverMenu();
         }
 
         timerText.text="Time Remaining: "+roundedTime;

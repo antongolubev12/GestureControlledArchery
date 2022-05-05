@@ -31,17 +31,19 @@ public class MainMenuManager : MonoBehaviour
         }
 
         if(thalmicMyo.pose==Pose.WaveIn){
-            SceneManager.LoadScene("Quit");
+            Application.Quit();
         }
         
     }
 
     public void LoadGame(){
         SceneManager.LoadScene("Game");
+        Time.timeScale = 1f;
     }
 
     public void LoadPractice(){
         SceneManager.LoadScene("Practice");
+        Time.timeScale = 1f;
     }
 
     public void Quit(){
