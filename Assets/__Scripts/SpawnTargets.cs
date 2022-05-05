@@ -50,8 +50,8 @@ public class SpawnTargets : MonoBehaviour
             //pick a random target to spawn
             int randomTarget= Random.Range(0,targets.Length);
 
+            //pick random spawnpoint
             int randomPoint= Random.Range(0,spawnPoints.Length);
-
 
             //spawn it and rotate it 90 degrees
             GameObject spawnedObj= Instantiate(targets[randomTarget], spawnPoints[randomPoint].position, Quaternion.Euler(0, 0, 90));
@@ -59,8 +59,6 @@ public class SpawnTargets : MonoBehaviour
             spawnedObj.transform.position = new Vector3(spawnedObj.transform.position.x, spawnedObj.transform.position.y, spawnedObj.transform.position.z);
 
 
-            //add object to list of current targets
-            //currentTargets.Add(spawnedObj.transform);
 
             print("Spawned at : "+count);
             count++;

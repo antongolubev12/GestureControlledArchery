@@ -30,7 +30,7 @@ public class Explode : MonoBehaviour
 
     private void CreateCubeExplosion(Vector3 coordinates)
     {
-        //Create the cube using createP
+        //Create the cube from prefabs
         GameObject miniCube = GameObject.Instantiate(prefab);
 
         Renderer renderer = miniCube.GetComponentInChildren<Renderer>();

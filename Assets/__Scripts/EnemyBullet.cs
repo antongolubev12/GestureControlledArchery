@@ -16,10 +16,6 @@ public class EnemyBullet : MonoBehaviour {
 		rb.velocity = new Vector3 (moveDirection.x, moveDirection.y,moveDirection.z);
 	}
 
-    private void Update() {
-        
-    }
-
 	void OnTriggerEnter (Collider col)
 	{
 		if (col.CompareTag ("Player")) {

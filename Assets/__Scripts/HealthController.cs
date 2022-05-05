@@ -40,6 +40,7 @@ public class HealthController : MonoBehaviour
     {   
         if (isDead) return;
 
+        //take away damage from health
         currentHealth -= damage;
 
         if (currentHealth <= 0)

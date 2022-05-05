@@ -8,8 +8,6 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private float timer;
 
-    [SerializeField] private int targetsToSpawn;
-
     [SerializeField] private float delay;
 
     // Start is called before the first frame update
@@ -18,13 +16,14 @@ public class EnemySpawner : MonoBehaviour
         InvokeRepeating("Spawn", delay, timer);
     }
 
-    // Update is called once per frame
 
+    //  
     void Spawn()
     {
-
+        //pick random enemy
         int randomEnemy = Random.Range(0, enemies.Length);
 
+        //spawn enemy at location of spawner
         GameObject enemy = Instantiate(enemies[randomEnemy], transform.position, Quaternion.Euler(0, 0, 90));
     }
     

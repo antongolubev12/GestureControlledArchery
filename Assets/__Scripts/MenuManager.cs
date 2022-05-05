@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        Time.timeScale=1f;
+        Time.timeScale = 1f;
         scene = SceneManager.GetActiveScene();
     }
     // Update is called once per frame
@@ -53,6 +53,7 @@ public class MenuManager : MonoBehaviour
         }
 
         //double tap to pause
+
         if (isPaused)
         {
             if (thalmicMyo.pose == Pose.Fist)
@@ -67,10 +68,7 @@ public class MenuManager : MonoBehaviour
                 Pause();
             }
         }
-
-
-
-
+        
         //WaveIn to play again
         if (isOver)
         {
